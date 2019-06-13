@@ -1,0 +1,45 @@
+syntax = "proto3";
+package pb_src;
+
+import "google/protobuf/timestamp.proto";
+
+message LogEntry {
+    int64 user_id = 1;
+    int32 severity = 2;
+    string log_type = 3;
+    string section = 4;
+    string description = 5;
+    string additional_data = 6;
+
+    // @inject_tag: sql:"type:timestamptz"
+    google.protobuf.Timestamp happened_at = 7;
+
+    // @inject_tag: sql:"type:timestamptz,default:now()"
+    google.protobuf.Timestamp created_at = 8;
+}
+
+message QueryItem {
+    string param = 1;
+    string value = 2;
+}
+
+message LogCreationResponse {
+    string result = 1;
+    string error = 2;
+}
+
+message EntriesRequest {
+    int32 limit = 1;
+    int32 page = 2;
+    repeated QueryItem query = 3;
+}
+
+message EntriesResponse {
+    repeated LogEntry entries = 1;
+    int64 count = 2;
+}
+
+service LoggerService {
+    rpc CreateEntry (LogEntry) returns (LogCreationResponse);
+    rpc GetEntries (EntriesRequest) returns (EntriesResponse);
+}

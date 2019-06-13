@@ -1,0 +1,29 @@
+version: '2'
+services:
+  # Образ для основного приложения
+  logger:
+    build: ./logger
+    container_name: logger
+    restart: always
+    links:
+      - postgres
+    ports:
+      - $MAIN_PORT:$MAIN_PORT
+    environment:
+      MAIN_PORT: $MAIN_PORT
+      DB_LOGIN: $DB_LOGIN
+      DB_PASSWORD: $DB_PASSWORD
+      DB_NAME: $DB_NAME
+      DB_PORT: $DB_PORT
+
+  # Образ для базы данных
+  postgres:
+    build: ./postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - $DB_PORT:5432
+    environment:
+      POSTGRES_USER: $DB_LOGIN
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
