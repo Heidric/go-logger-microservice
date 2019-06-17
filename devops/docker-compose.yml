@@ -1,6 +1,6 @@
 version: '2'
 services:
-  # Образ для основного приложения
+  # Main application image
   logger:
     build: ./logger
     container_name: logger
@@ -16,7 +16,7 @@ services:
       DB_NAME: $DB_NAME
       DB_PORT: $DB_PORT
 
-  # Образ для базы данных
+  # Database image
   postgres:
     build: ./postgres
     container_name: postgres
