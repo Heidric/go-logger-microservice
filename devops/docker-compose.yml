@@ -2,6 +2,7 @@ version: '2'
 services:
   # Main application image
   logger:
+    image: logger
     build: ./logger
     container_name: logger
     restart: always
@@ -18,8 +19,9 @@ services:
 
   # Database image
   postgres:
+    image: loggerdb
     build: ./postgres
-    container_name: postgres
+    container_name: loggerdb
     restart: always
     ports:
       - $DB_PORT:5432
